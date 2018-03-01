@@ -1,1 +1,1 @@
-no interface te0/0/0/0
+logging 123456
