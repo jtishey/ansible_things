@@ -1,0 +1,23 @@
+---
+- hosts: cisco-ios
+  gather_facts: no
+  connection: local
+
+  tasks:
+  - name: OBTAIN LOGIN CREDENTIALS
+    include_vars: vault-vars.yml
+
+  - name: DEFINE PROVIDER
+    set_fact:
+      provider:
+        host: "{{ inventory_hostname }}"
+        username: "{{ ROOT_USER }}"
+        password: "{{ ROOT_PASSWORD }}"
+        dev_os: "ios"
+
+  - napalm_install_config:
+        provider: "{{ provider }}"
+        config_file: "CFGS/test-merge.txt"
+        commit_changes: True
+        replace_config: False
+        diff_file: "DIFFS/{{ inventory_hostname }}.txt"

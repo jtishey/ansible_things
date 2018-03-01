@@ -22,6 +22,7 @@ class ResultCallback(CallbackBase):
         """Print a json representation of the result
         This method could store the result in an instance attribute for retrieval later
         """
+        print result
         host = result._host
         print(json.dumps({host.name: result._result}, indent=4))
 
@@ -46,16 +47,16 @@ play_source =  dict(
         hosts = 'cisco-ios',
         gather_facts = 'no',
         tasks = [{'name': 'OBTAIN LOGIN CREDENTIALS',
-                    'include_vars': 'vault-vars.yml'},
+                       'include_vars': 'vault-vars.yml'},
                  {'name': 'DEFINE PROVIDER',
-                    'set_fact': {'provider': {'username': '{{ ROOT_USER }}',
-                                              'host': '{{ inventory_hostname }}',
-                                              'password': '{{ ROOT_PASSWORD }}'}}},
+                       'set_fact': {'provider': {'username': '{{ ROOT_USER }}',
+                       'host': '{{ inventory_hostname }}',
+                       'password': '{{ ROOT_PASSWORD }}'}}},
                 {'name': 'BACKUP RUNNING CONFIG',
-                    'ios_config': {
-                        'authorize': True,
-                        'backup': True,
-                        'provider': '{{ provider }}'
+                       'ios_config': {
+                           'authorize': True,
+                           'backup': True,
+                           'provider': '{{ provider }}'
                 }}]
     )
 
@@ -76,3 +77,4 @@ try:
 finally:
     if tqm is not None:
         tqm.cleanup()
+
