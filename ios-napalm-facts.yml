@@ -1,0 +1,20 @@
+---
+- hosts: cisco-ios
+  gather_facts: no
+  connection: local
+
+  tasks:
+  - name: OBTAIN LOGIN CREDENTIALS
+    include_vars: vault-vars.yml
+
+  - name: GET FACTS WITH NAPALM
+    napalm_get_facts:
+      hostname={{ inventory_hostname }}
+      username={{ ROOT_USER }}
+      dev_os='ios'
+      password={{ ROOT_PASSWORD }}
+      filter='facts,interfaces'
+    register: result
+
+  - name: print data
+    debug: var=result

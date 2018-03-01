@@ -1,0 +1,21 @@
+---
+- hosts: cisco-ios
+  gather_facts: no
+  connection: local
+
+  tasks:
+  - name: OBTAIN LOGIN CREDENTIALS
+    include_vars: vault-vars.yml
+
+  - name: DEFINE PROVIDER
+    set_fact:
+      provider:
+        host: "{{ inventory_hostname }}"
+        username: "{{ ROOT_USER }}"
+        password: "{{ ROOT_PASSWORD }}"
+
+  - name: BACKUP RUNNING CONFIG
+    ios_config:
+      provider: "{{ provider }}"
+      authorize: yes
+      backup: yes

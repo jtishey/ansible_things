@@ -1,0 +1,24 @@
+---
+- name: Get Device Facts 
+  hosts: juniper
+  roles:
+  - Juniper.junos
+  connection: local
+  gather_facts: no
+
+  vars_files:
+  - vault-vars.yml
+
+  tasks:   
+  - name: Checking NETCONF connectivity
+    wait_for: host={{ inventory_hostname }} port={{ PORT_NETCONF }} timeout=5
+
+  - name: Retrieve information from devices running Junos OS
+    junos_get_facts: 
+      host={{ inventory_hostname }}         
+      user={{ ROOT_USER }}
+      passwd={{ ROOT_PASSWORD }}
+    register: junos
+
+#  - name: Show Version
+#    debug: msg="{{ junos.facts.version }}"
